@@ -80,7 +80,7 @@
     {% if session.get('role') == 'admin' %}
         <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
         <a href="{{ url_for('create_form') }}">Create Form</a>
-        <a href="{{ url_for('manage_users') }}">Manage Users</a>
+        
     {% else %}
         <a href="{{ url_for('staff_dashboard') }}">Dashboard</a>
     {% endif %}
