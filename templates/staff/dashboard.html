@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Available Forms</h3>
+
+<table class="table table-hover">
+    <tr>
+        <th>Form Name</th>
+        <th>Action</th>
+    </tr>
+
+    {% for form in forms %}
+    <tr>
+        <td>{{ form.name }}</td>
+        <td>
+            <a href="{{ url_for('fill_form', form_id=form.id) }}" class="btn btn-sm btn-primary">
+                Fill Form
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

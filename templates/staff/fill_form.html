@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">{{ form.name }}</h4>
+        </div>
+
+        <div class="card-body p-4">
+
+            <form method="POST">
+
+                {% for field in fields %}
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-bold">
+                        {{ field.label }}
+                        {% if field.required %}
+                            <span class="text-danger">*</span>
+                        {% endif %}
+                    </label>
+
+                    <!-- TEXT -->
+                    {% if field.field_type == "text" %}
+                        <input type="text"
+                               name="{{ field.label }}"
+                               class="form-control form-control-lg"
+                               {% if field.required %}required{% endif %}>
+
+                    <!-- NUMBER -->
+                    {% elif field.field_type == "number" %}
+                        <input type="number"
+                               name="{{ field.label }}"
+                               class="form-control form-control-lg"
+                               {% if field.required %}required{% endif %}>
+
+                    <!-- DATE -->
+                    {% elif field.field_type == "date" %}
+                        <input type="date"
+                               name="{{ field.label }}"
+                               class="form-control form-control-lg"
+                               {% if field.required %}required{% endif %}>
+
+                    <!-- SELECT -->
+                    {% elif field.field_type == "select" %}
+                        <select name="{{ field.label }}"
+                                class="form-select form-select-lg"
+                                {% if field.required %}required{% endif %}>
+                            <option value="">-- Select --</option>
+                            {% if field.options %}
+                                {% for option in field.options.split(',') %}
+                                    <option value="{{ option.strip() }}">
+                                        {{ option.strip() }}
+                                    </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+
+                    <!-- CHECKBOX -->
+                    {% elif field.field_type == "checkbox" %}
+                        <div class="mt-2">
+                            {% if field.options %}
+                                {% for option in field.options.split(',') %}
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="{{ field.label }}"
+                                           value="{{ option.strip() }}"
+                                           id="{{ field.label }}_{{ loop.index }}">
+                                    <label class="form-check-label"
+                                           for="{{ field.label }}_{{ loop.index }}">
+                                        {{ option.strip() }}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+                <div class="d-grid">
+                    <button type="submit"
+                            class="btn btn-success btn-lg shadow">
+                        Submit Form
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

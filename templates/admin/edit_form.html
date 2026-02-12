@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card shadow-lg">
+    <div class="card-header bg-dark text-white">
+        <h4>Edit Form</h4>
+    </div>
+
+    <div class="card-body">
+        <form method="POST">
+
+            <div class="mb-4">
+                <label>Form Name</label>
+                <input type="text"
+                       name="form_name"
+                       value="{{ form.name }}"
+                       class="form-control"
+                       required>
+            </div>
+
+            <hr>
+
+            <h5>Existing Fields</h5>
+
+            {% for field in fields %}
+            <div class="card p-3 mb-3">
+
+                <input type="hidden" name="field_id" value="{{ field.id }}">
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <label>Label</label>
+                        <input type="text"
+                               name="label_{{ field.id }}"
+                               value="{{ field.label }}"
+                               class="form-control"
+                               required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Type</label>
+                        <select name="type_{{ field.id }}"
+                                class="form-control">
+                            <option value="text" {% if field.field_type=='text' %}selected{% endif %}>Text</option>
+                            <option value="number" {% if field.field_type=='number' %}selected{% endif %}>Number</option>
+                            <option value="date" {% if field.field_type=='date' %}selected{% endif %}>Date</option>
+                            <option value="select" {% if field.field_type=='select' %}selected{% endif %}>Select</option>
+                            <option value="checkbox" {% if field.field_type=='checkbox' %}selected{% endif %}>Checkbox</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Options</label>
+                        <input type="text"
+                               name="options_{{ field.id }}"
+                               value="{{ field.options }}"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label>Required</label>
+                        <input type="checkbox"
+                               name="required_{{ field.id }}"
+                               {% if field.required %}checked{% endif %}>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+
+            <hr>
+
+            <h5>Add New Field</h5>
+
+            <div id="new-fields"></div>
+
+            <button type="button"
+                    class="btn btn-outline-primary mb-3"
+                    onclick="addNewField()">
+                + Add Field
+            </button>
+
+            <br>
+
+            <button class="btn btn-success">
+                Update Form
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+let newCount = 0;
+
+function addNewField() {
+    newCount++;
+
+    let html = `
+    <div class="card p-3 mb-3">
+        <div class="row">
+
+            <div class="col-md-3">
+                <input type="text"
+                       name="new_label_${newCount}"
+                       class="form-control"
+                       placeholder="Field Label"
+                       required>
+            </div>
+
+            <div class="col-md-2">
+                <select name="new_type_${newCount}"
+                        class="form-control">
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="select">Select</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <input type="text"
+                       name="new_options_${newCount}"
+                       class="form-control"
+                       placeholder="Options">
+            </div>
+
+            <div class="col-md-2">
+                Required <input type="checkbox"
+                                name="new_required_${newCount}">
+            </div>
+
+        </div>
+    </div>
+    `;
+
+    document.getElementById("new-fields")
+            .insertAdjacentHTML('beforeend', html);
+}
+</script>
+
+{% endblock %}

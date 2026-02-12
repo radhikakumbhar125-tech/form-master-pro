@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Create New Form</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                <!-- Form Name -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Form Name</label>
+                    <input type="text" name="form_name"
+                           class="form-control form-control-lg"
+                           placeholder="Enter form name"
+                           required>
+                </div>
+
+                <hr>
+
+                <!-- Dynamic Fields Section -->
+                <h5 class="mb-3">Form Fields</h5>
+
+                <div id="fields-container"></div>
+
+                <button type="button"
+                        class="btn btn-outline-primary mb-4"
+                        onclick="addField()">
+                    + Add Field
+                </button>
+
+                <br>
+
+                <button type="submit" class="btn btn-success btn-lg">
+                    Create Form
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+let fieldCount = 0;
+
+function addField() {
+
+    fieldCount++;
+
+    let fieldHTML = `
+    <div class="card mb-3 p-3 shadow-sm" id="field-${fieldCount}">
+        <div class="row">
+
+            <div class="col-md-4">
+                <label>Field Label</label>
+                <input type="text"
+                       name="label_${fieldCount}"
+                       class="form-control"
+                       placeholder="Field Label"
+                       required>
+            </div>
+
+            <div class="col-md-3">
+                <label>Field Type</label>
+                <select name="type_${fieldCount}"
+                        class="form-control"
+                        onchange="toggleOptions(${fieldCount})"
+                        required>
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="select">Select</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+            </div>
+
+            <div class="col-md-4" id="options-container-${fieldCount}" style="display:none;">
+                <label>Options (comma separated)</label>
+                <input type="text"
+                       name="options_${fieldCount}"
+                       class="form-control"
+                       placeholder="Option1, Option2, Option3">
+            </div>
+
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="button"
+                        class="btn btn-danger"
+                        onclick="removeField(${fieldCount})">
+                    X
+                </button>
+            </div>
+
+        </div>
+    </div>
+    `;
+
+    document.getElementById("fields-container")
+            .insertAdjacentHTML('beforeend', fieldHTML);
+}
+
+function removeField(id) {
+    document.getElementById(`field-${id}`).remove();
+}
+
+function toggleOptions(id) {
+    let type = document.querySelector(`select[name="type_${id}"]`).value;
+    let optionsBox = document.getElementById(`options-container-${id}`);
+
+    if (type === "select" || type === "checkbox") {
+        optionsBox.style.display = "block";
+    } else {
+        optionsBox.style.display = "none";
+    }
+}
+</script>
+
+{% endblock %}

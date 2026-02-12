@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Add Fields - {{ form.name }}</h3>
+
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input name="label" class="form-control" placeholder="Field Label" required>
+    </div>
+
+    <div class="col-md-4">
+        <select name="field_type" class="form-control">
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+            <option value="select">Select</option>
+            <option value="checkbox">Checkbox</option>
+        </select>
+    </div>
+
+    <div class="col-md-4">
+        <input name="options" class="form-control"
+               placeholder="Options (comma separated)">
+    </div>
+
+    <div class="col-md-12">
+        <button class="btn btn-primary">Add Field</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Label</th>
+        <th>Type</th>
+        <th>Options</th>
+    </tr>
+
+    {% for field in fields %}
+    <tr>
+        <td>{{ field.label }}</td>
+        <td>{{ field.field_type }}</td>
+        <td>{{ field.options }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
